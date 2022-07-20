@@ -1,0 +1,13 @@
+{
+
+    "date": [1],
+    "sess": [1],
+    "price": [1],
+    "real_name": [1],
+    "nick_name": "麦子03Kuf",
+    "ticket_num": 1,
+    "driver_path": "C:\\Program Files\\Google\\Chrome\\Application\\chromedriver.exe",
+    "damai_url": "https://www.damai.cn/",
+    "target_url": "https://detail.damai.cn/item.htm?id=678969297213"
+}
+
