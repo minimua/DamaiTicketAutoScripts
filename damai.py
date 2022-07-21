@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.common.action_chains import ActionChains
 
 
 class Concert(object):
@@ -89,10 +90,29 @@ class Concert(object):
                  'permissions.default.stylesheet': 2}
         options.add_experimental_option("prefs", prefs)
 
+        options.add_experimental_option('excludeSwitches', ['enable-automation'])
+        options.add_experimental_option('useAutomationExtension', False)
+        options.add_argument(
+            'user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36')
+        options.add_argument("--disable-blink-features=AutomationControlled")
+        # driver = webdriver.Chrome(options=options)
+        # with open('stealth.min.js') as f:
+        #     js = f.read()
+        # driver.execute_cdp_cmd('Page.addScriptToEvaluateOnNewDocument', {
+        #     'source': js
+        # })
+
         # 更换等待策略为不等待浏览器加载完全就进行下一步操作
         capa = DesiredCapabilities.CHROME
         capa["pageLoadStrategy"] = "none"
         self.driver = webdriver.Chrome(executable_path=self.driver_path, options=options, desired_capabilities=capa)
+
+        with open('stealth.min.js') as f:
+            js = f.read()
+        self.driver.execute_cdp_cmd('Page.addScriptToEvaluateOnNewDocument', {
+            'source': js
+        })
+
         # 登录到具体抢购页面
         self.login()
         self.driver.refresh()
@@ -251,6 +271,18 @@ class Concert(object):
 
             else:
                 self.driver.find_element_by_xpath('/html/body/div[2]/div[2]/div/div[8]/button').click()
+
+            # baxia-dialog-content
+            # self.driver.switch_to.frame('baxia-dialog-content')  # driver.switch_to.frame(id)
+            # slider = self.driver.find_element_by_id('nc_1__bg')
+            # action = ActionChains(self.driver)
+            # # 点击长按指定的标签
+            # action.click_and_hold(slider)
+            # for i in range(2):
+            #     action.move_by_offset(129, 0).perform()
+            #     sleep(0.1)
+            # # 释放动作链对象
+            # action.release().perform()
 
             # 判断title是不是支付宝
             print(u"###等待跳转到--付款界面--，可自行刷新，若长期不跳转可选择-- CRTL+C --重新抢票###")
